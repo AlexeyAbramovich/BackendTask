@@ -1,0 +1,130 @@
+{% load menu_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+<div class="menu">
+    {% draw_menu 'main_menu' %}
+    <nav>
+        <ul>
+            {% for item in menu_items %}
+                <li>
+                    <a href="{{ item.url }}">{{ item.name }}</a>
+                    {% if item.children %}
+                        {% if item.children.count > 0 %}
+                            <button class="expand-btn">-</button>
+                        {% endif %}
+                        <ul style="display: block;">
+                            {% for child in item.children.all %}
+                                <li>
+                                    <a href="{{ child.url }}">{{ child.name }}</a>
+                                    {% if child.children %}
+                                        {% if child.children.count > 0 %}
+                                            <button class="expand-btn">-</button>
+                                        {% endif %}
+                                        <ul style="display: block;">
+                                            {% for grandchild in child.children.all %}
+                                                <li>
+                                                    <a href="{{ grandchild.url }}">{{ grandchild.name }}</a>
+                                                    {% if grandchild.children %}
+                                                        {% if grandchild.children.count > 0 %}
+                                                            <button class="expand-btn">-</button>
+                                                        {% endif %}
+                                                        <ul style="display: block;">
+                                                            {% for grandgrandchild in grandchild.children.all %}
+                                                                <li>
+                                                                    <a href="{{ grandgrandchild.url }}">{{ grandgrandchild.name }}</a>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+</div>
+<div class="menu">
+    {% draw_menu 'second_menu' %}
+    <nav>
+        <ul>
+            {% for item in menu_items %}
+                <li>
+                    <a href="{{ item.url }}">{{ item.name }}</a>
+                    {% if item.children %}
+                        {% if item.children.count > 0 %}
+                            <button class="expand-btn">-</button>
+                        {% endif %}
+                        <ul style="display: block;">
+                            {% for child in item.children.all %}
+                                <li>
+                                    <a href="{{ child.url }}">{{ child.name }}</a>
+                                    {% if child.children %}
+                                        {% if child.children.count > 0 %}
+                                            <button class="expand-btn">-</button>
+                                        {% endif %}
+                                        <ul style="display: block;">
+                                            {% for grandchild in child.children.all %}
+                                                <li>
+                                                    <a href="{{ grandchild.url }}">{{ grandchild.name }}</a>
+                                                    {% if grandchild.children %}
+                                                        {% if grandchild.children.count > 0 %}
+                                                            <button class="expand-btn">-</button>
+                                                        {% endif %}
+                                                        <ul style="display: block;">
+                                                            {% for grandgrandchild in grandchild.children.all %}
+                                                                <li>
+                                                                    <a href="{{ grandgrandchild.url }}">{{ grandgrandchild.name }}</a>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+</div>
+</body>
+<script>
+    var expandButtons = document.querySelectorAll('.expand-btn');
+
+    // Обрабатываем клик по каждой кнопке
+    for (var i = 0; i < expandButtons.length; i++) {
+        expandButtons[i].addEventListener('click', function () {
+            // Находим родительский элемент для кнопки
+            var parentItem = this.parentNode;
+
+            // Находим вложенный список
+            var nestedList = parentItem.querySelector('ul');
+            // Если список отображен, скрываем его, иначе - отображаем
+            if (nestedList.style.display === 'block') {
+                nestedList.style.display = 'none';
+                this.innerHTML = '+';
+            } else {
+                nestedList.style.display = 'block';
+                this.innerHTML = '-';
+            }
+        });
+    }
+</script>
+</html>
